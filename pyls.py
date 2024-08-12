@@ -39,6 +39,11 @@ def gather_file_info(dirname, long_format, filetype):
     Returns:
         list of dict: Each dictionary contains details about a file or directory (e.g., name, type, modification time, size).
     """
+    
+    assert isinstance(dirname, str), f"Expected dirname to be a string, got {type(dirname)}"
+    assert isinstance(long_format, bool), f"Expected long_format to be a boolean, got {type(long_format)}"
+    assert isinstance(filetype, bool), f"Expected filetype to be a boolean, got {type(filetype)}"
+    
     results = []
     try:
         for entry in os.scandir(dirname):
@@ -54,7 +59,11 @@ def gather_file_info(dirname, long_format, filetype):
                 "modtime": datetime.fromtimestamp(entry.stat().st_mtime),
                 "filesize": entry.stat().st_size if not entry.is_dir(follow_symlinks=False) else 0
             }
+            
+            assert isinstance(file_info['modtime'], datetime), "Modification time should be a datetime object"
+            assert isinstance(file_info['filesize'], int), "File size should be an integer"
             results.append(file_info)
+            
     except Exception as e:
         print(f"Error accessing directory {dirname}: {e}")
 
