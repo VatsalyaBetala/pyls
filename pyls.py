@@ -27,45 +27,6 @@ Examples:
 The 'pyls' tool is designed to mimic some functionalities of the unix 'ls' command, for simplicity and use in Python. 
 """
 
-parser = argparse.ArgumentParser(
-    prog='pyls',
-    description='Lists files in the given directory',
-    epilog=epilog, 
-    formatter_class=argparse.RawTextHelpFormatter
-)
-
-# Add an argument
-parser.add_argument('dirname',
-                    help="Name of directory to list the contents of",
-                    nargs='?',
-                    default=".")
-
-parser.add_argument('-l', '--long-format',
-                    help="Presents more details about files in columnar format",
-                    action='store_true')
-
-parser.add_argument('-F', '--filetype',
-                    help="Adds an extra character to the end of the printed filename that indicates its type.",
-                    action='store_true')
-
-args = parser.parse_args()
-def main(args):
-    """
-    Coordinates the overall program execution by invoking functions to gather file information,
-    format it according to the command line options, and display the results.
-    
-    Args:
-        args (Namespace): Command line arguments parsed by argparse.
-    """
-    args = parser.parse_args()
-
-    file_info_list = gather_file_info(args.dirname, args.long_format, args.filetype)
-    
-    formatted_lines = format_file_info(file_info_list, args.long_format, args.filetype)
-    
-    display_results(formatted_lines)
-
-
 def gather_file_info(dirname, long_format, filetype):
     """
     Collects detailed information about each file and directory within the given directory.
@@ -143,4 +104,29 @@ def display_results(lines):
         print(line)
 
 if __name__ == "__main__":
-    main(args)
+    
+    parser = argparse.ArgumentParser(
+    prog='pyls',
+    description='Lists files in the given directory',
+    epilog=epilog,
+    formatter_class=argparse.RawTextHelpFormatter)
+
+    parser.add_argument('dirname',
+                        help="Name of directory to list the contents of",
+                        nargs='?',
+                        default=".")
+
+    parser.add_argument('-l', '--long-format',
+                        help="Presents more details about files in columnar format",
+                        action='store_true')
+
+    parser.add_argument('-F', '--filetype',
+                        help="Adds an extra character to the end of the printed filename that indicates its type.",
+                        action='store_true')
+
+    args = parser.parse_args()
+
+    # Use the parsed arguments in your functions
+    file_info_list = gather_file_info(args.dirname, args.long_format, args.filetype)
+    formatted_lines = format_file_info(file_info_list, args.long_format, args.filetype)
+    display_results(formatted_lines)
