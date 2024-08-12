@@ -3,10 +3,35 @@ import os
 from datetime import datetime
 
 # Create the parser
+
+epilog = """
+Examples:
+  Basic usage to list files in the current directory:
+    $ pyls
+
+  To list files in a specific directory:
+    $ pyls /path/to/directory
+
+  To list files with detailed information (long format):
+    $ pyls -l
+    $ pyls --long-format /path/to/directory
+
+  To list files with type indicators:
+    $ pyls -F
+    $ pyls --filetype /path/to/directory
+
+  Combine options to display detailed information and file type indicators:
+    $ pyls -lF /path/to/directory
+    $ pyls --long-format --filetype /path/to/directory
+
+The 'pyls' tool is designed to mimic some functionalities of the unix 'ls' command, for simplicity and use in Python. 
+"""
+
 parser = argparse.ArgumentParser(
     prog='pyls',
     description='Lists files in the given directory',
-    epilog="That's it!"
+    epilog=epilog, 
+    formatter_class=argparse.RawTextHelpFormatter
 )
 
 # Add an argument
@@ -32,7 +57,8 @@ def main(args):
     Args:
         args (Namespace): Command line arguments parsed by argparse.
     """
-    
+    pass 
+
 def gather_file_info(dirname, long_format, filetype):
     """
     Collects detailed information about each file and directory within the given directory.
