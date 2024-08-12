@@ -1,5 +1,6 @@
 import argparse
 import os
+from datetime import datetime
 
 # Create the parser
 parser = argparse.ArgumentParser(
@@ -31,8 +32,7 @@ def main(args):
     Args:
         args (Namespace): Command line arguments parsed by argparse.
     """
-    pass  # Placeholder for implementation
-
+    
 def gather_file_info(dirname, long_format, filetype):
     """
     Collects detailed information about each file and directory within the given directory.
@@ -45,7 +45,27 @@ def gather_file_info(dirname, long_format, filetype):
     Returns:
         list of dict: Each dictionary contains details about a file or directory (e.g., name, type, modification time, size).
     """
-    pass  # Placeholder for implementation
+    results = []
+    try:
+        for entry in os.scandir(dirname):
+            filetype_char = 'f'
+            if entry.is_dir(follow_symlinks=False):
+                filetype_char = 'd'  # It's a directory
+            elif os.access(entry.path, os.X_OK):
+                filetype_char = 'x'  # It's executable
+
+            file_info = {
+                "filename": entry.name,
+                "filetype": filetype_char,
+                "modtime": datetime.fromtimestamp(entry.stat().st_mtime),
+                "filesize": entry.stat().st_size if not entry.is_dir(follow_symlinks=False) else 0
+            }
+            results.append(file_info)
+    except Exception as e:
+        print(f"Error accessing directory {dirname}: {e}")
+
+    return results
+
 
 def format_file_info(file_info_list, long_format, filetype):
     """
@@ -61,12 +81,15 @@ def format_file_info(file_info_list, long_format, filetype):
     """
     pass  # Placeholder for implementation
 
-def display_results(formatted_lines):
+def display_results(lines):
     """
     Outputs the formatted file information strings to the console.
     
     Args:
         formatted_lines (list of str): Strings that have been formatted for display.
     """
-    pass  # Placeholder for implementation
+    for line in lines:
+        print(line)
 
+if __name__ == "__main__":
+    main(args)
