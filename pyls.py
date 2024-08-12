@@ -112,8 +112,26 @@ def format_file_info(file_info_list, long_format, filetype):
     Returns:
         list of str: Formatted file information strings ready for display.
     """
-    pass  # Placeholder for implementation
+    
+    formatted_lines = []
+    for file_info in file_info_list: 
+        # Filename
+        line = file_info['filename']
+        
+        # If long format
+        if long_format: 
+            line = f"{file_info['modtime'].strftime('%Y-%m-%d %H:%M:%S')} {str(file_info['filesize']).rjust(6)} {line}"
+            
+        # If filetype
+        if filetype:
+            line += ' *' if file_info['filetype'] == 'x' else ''
+            line += ' /' if file_info['filetype'] == 'd' else ''
 
+        formatted_lines.append(line)
+    
+    return formatted_lines
+    
+    
 def display_results(lines):
     """
     Outputs the formatted file information strings to the console.
