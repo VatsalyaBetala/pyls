@@ -57,7 +57,14 @@ def main(args):
     Args:
         args (Namespace): Command line arguments parsed by argparse.
     """
-    pass 
+    args = parser.parse_args()
+
+    file_info_list = gather_file_info(args.dirname, args.long_format, args.filetype)
+    
+    formatted_lines = format_file_info(file_info_list, args.long_format, args.filetype)
+    
+    display_results(formatted_lines)
+
 
 def gather_file_info(dirname, long_format, filetype):
     """
