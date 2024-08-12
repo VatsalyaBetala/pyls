@@ -82,6 +82,12 @@ def format_file_info(file_info_list, long_format, filetype):
     Returns:
         list of str: Formatted file information strings ready for display.
     """
+    # Assert to check the input types
+    assert isinstance(file_info_list, list), "Expected file_info_list to be a list"
+    assert all(isinstance(info, dict) for info in file_info_list), "All items in file_info_list should be dictionaries"
+    assert isinstance(long_format, bool), "Expected long_format to be a boolean"
+    assert isinstance(filetype, bool), "Expected filetype to be a boolean"
+    
     
     formatted_lines = []
     for file_info in file_info_list: 
@@ -90,6 +96,9 @@ def format_file_info(file_info_list, long_format, filetype):
         
         # If long format
         if long_format: 
+            assert isinstance(file_info['modtime'], datetime), "modtime should be a datetime object"  # checks if the modtime field in each file information dictionary (file_info) is an instance of the `datetime` class.
+            assert isinstance(file_info['filesize'], int), "filesize should be an integer" # checks if the if the filesize field in each file information dictionary is an integer.
+            
             line = f"{file_info['modtime'].strftime('%Y-%m-%d %H:%M:%S')} {str(file_info['filesize']).rjust(6)} {line}"
             
         # If filetype
@@ -97,7 +106,7 @@ def format_file_info(file_info_list, long_format, filetype):
             line += ' *' if file_info['filetype'] == 'x' else ''
             line += ' /' if file_info['filetype'] == 'd' else ''
 
-        formatted_lines.append(line)
+        formatted_lines.append(line)    
     
     return formatted_lines
     
